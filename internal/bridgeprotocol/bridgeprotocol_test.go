@@ -5,20 +5,24 @@ import (
     "testing"
 )
 
+// TestNewApp verifies that NewApp returns a non-nil app with expected properties.
 func TestNewApp(t *testing.T) {
+    // Create a new app with verbose logging enabled
     app := NewApp(true)
     if app == nil {
         t.Fatal("NewApp returned nil")
     }
     if !app.Verbose {
-        t.Error("Expected verbose to be true")
+        t.Errorf("Expected verbose to be true, got %v", app.Verbose)
     }
     if app.ProcessedCount != 0 {
         t.Errorf("Expected ProcessedCount to be 0, got %d", app.ProcessedCount)
     }
 }
 
+// TestProcess verifies that the Process method returns a successful result.
 func TestProcess(t *testing.T) {
+    // Create a new app with verbose logging disabled
     app := NewApp(false)
     result, err := app.Process("test data")
     
@@ -27,7 +31,7 @@ func TestProcess(t *testing.T) {
     }
     
     if !result.Success {
-        t.Error("Expected result.Success to be true")
+        t.Errorf("Expected result.Success to be true, got %v", result.Success)
     }
     
     if app.ProcessedCount != 1 {
@@ -35,11 +39,13 @@ func TestProcess(t *testing.T) {
     }
 }
 
+// TestRun verifies that the Run method returns no error.
 func TestRun(t *testing.T) {
+    // Create a new app with verbose logging disabled
     app := NewApp(false)
     err := app.Run("", "")
     
     if err != nil {
-        t.Fatalf("Run returned error: %v", err)
+        t.Errorf("Run returned unexpected error: %v", err)
     }
 }
